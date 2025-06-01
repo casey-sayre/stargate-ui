@@ -1,0 +1,19 @@
+{
+	"name": "stargate-ui",
+	"image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
+	"features": {
+		"ghcr.io/devcontainers/features/node:1": {}
+	},
+	"mounts": [
+		"source=${localEnv:HOME}/.ssh,target=/home/node/.ssh,type=bind,readonly"
+	],
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"esbenp.prettier-vscode",
+				"Angular.ng-template"
+			]
+		}
+	},
+	"postCreateCommand": "npm install && npm install -g @angular/cli"
+}
