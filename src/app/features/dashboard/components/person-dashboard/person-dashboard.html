@@ -1,0 +1,2 @@
+<person-filter (filtersChanged)="onFiltersChanged($event)"></person-filter>
+<person-grid [persons]="filteredPersons$ | async" [cols]="(cols$ | async)"></person-grid>

@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { Person } from './models/person.model';
 import { BaseResponse } from './models/base-response.model';
+import { environment } from '../../environments/environment';
 
 interface ApiResponse extends BaseResponse {
   people: Person[];
@@ -13,13 +14,16 @@ interface ApiResponse extends BaseResponse {
   providedIn: 'root'
 })
 export class PersonDataService {
-  private apiUrl = 'https://localhost:7204/Person';
+  private apiUrl = `${environment.apiUrl}/Person`;
 
   constructor(private http: HttpClient) { }
 
-  getPersons(): Observable<Person[]> {
+  getPersons(astronautsOnly: boolean): Observable<Person[]> {
     return this.http.get<ApiResponse>(this.apiUrl).pipe(
-      map(response => response.success ? response.people : [])
+      map(response => response.success ? response.people : []),
+      map(persons => {
+        return persons.filter(person => !astronautsOnly || person.currentDutyTitle !== '');
+      })
     );
   }
 }

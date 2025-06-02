@@ -2,7 +2,7 @@
   margin: 20px;
 }
 
-.dashboard-card {
+.person-card {
   position: absolute;
   top: 15px;
   left: 15px;
@@ -16,6 +16,6 @@
   right: 10px;
 }
 
-.dashboard-card-content {
+.person-card-content {
   text-align: center;
 }
