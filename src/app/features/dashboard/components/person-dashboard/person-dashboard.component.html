@@ -1,0 +1,21 @@
+<div class="grid-container">
+  <mat-grid-list [cols]="(cols$ | async)" rowHeight="200px">
+    @for (person of persons$ | async; track person.personId) {
+      <mat-grid-tile>
+        <mat-card class="dashboard-card">
+          <mat-card-header>
+            <mat-card-title>
+              {{ person.name }}
+              <mat-icon class="example-icon" aria-hidden="false" aria-label="Example user icon">person</mat-icon>
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="dashboard-card-content">
+            <div>Person ID: {{ person.personId }}</div>
+            <div>Rank: {{ person.currentRank || 'N/A' }}</div>
+            <div>Duty: {{ person.currentDutyTitle || 'N/A' }}</div>
+            </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+    }
+  </mat-grid-list>
+</div>
