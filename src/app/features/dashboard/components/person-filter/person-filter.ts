@@ -1,5 +1,5 @@
 // person-filter.component.ts
-import { Component, Output, EventEmitter, ViewChild, OnInit } from '@angular/core';
+import { Component, Output, EventEmitter, ViewChild, OnInit, AfterViewInit } from '@angular/core';
 import { MatSlideToggleModule, MatSlideToggle } from '@angular/material/slide-toggle';
 import { FormsModule } from '@angular/forms';
 
@@ -10,12 +10,14 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [MatSlideToggleModule, FormsModule],
 })
-export class PersonFilterComponent implements OnInit {
+export class PersonFilterComponent implements OnInit, AfterViewInit {
   @ViewChild('astronautToggle') astronautToggle!: MatSlideToggle;
 
-  @Output() filtersChanged = new EventEmitter<{ astronautsOnly: boolean; }>();
+  @Output() filtersChanged = new EventEmitter<{ astronautsOnly: boolean }>();
 
-  ngOnInit(): void {
+  ngOnInit(): void { }
+
+  ngAfterViewInit(): void {
     this.emitFilters();
 
     this.astronautToggle.change.subscribe(() => this.emitFilters());
