@@ -1,2 +1,9 @@
 <person-filter (filtersChanged)="onFiltersChanged($event)"></person-filter>
-<person-grid [persons]="filteredPersons$ | async" [cols]="(cols$ | async)"></person-grid>
+@if (false && isLoading) {
+<div class="spinner-container">
+  <mat-spinner></mat-spinner>
+  <p>Loading Persons...</p>
+</div>
+} @else {
+  <person-grid [persons]="filteredPersons$ | async" [cols]="(cols$ | async)"></person-grid>
+}

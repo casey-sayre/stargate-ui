@@ -4,15 +4,16 @@ import { PersonDataService } from '../../../../core/person-data.service';
 import { Person } from '../../../../core/models/person.model';
 import { PersonFilterComponent } from '../person-filter/person-filter';
 import { PersonGridComponent } from '../person-grid/person-grid';
-import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
-import { map } from 'rxjs/operators';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { delay, map, tap } from 'rxjs/operators';
 import { AsyncPipe } from '@angular/common';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'person-dashboard',
   templateUrl: './person-dashboard.html',
   styleUrls: ['./person-dashboard.css'],
-  imports: [PersonFilterComponent, PersonGridComponent, AsyncPipe],
+  imports: [PersonFilterComponent, PersonGridComponent, AsyncPipe, MatProgressSpinnerModule],
 })
 export class PersonDashboard implements OnInit, OnDestroy {
   private personDataService = inject(PersonDataService);
@@ -26,9 +27,9 @@ export class PersonDashboard implements OnInit, OnDestroy {
   filters$ = this.filtersSubject.asObservable();
 
   filteredPersons$: Observable<Person[]> | undefined;
-  
+
   cols$!: Observable<number>;
-  
+
   isHandset$: Observable<boolean> = this.breakpointObserver.observe([
     '(max-width: 999px)'
   ]).pipe(
@@ -36,9 +37,15 @@ export class PersonDashboard implements OnInit, OnDestroy {
     map(result => result.matches)
   );
 
+  isLoading = false;
+
   ngOnInit() {
+    this.isLoading = true;
     this.filteredPersons$ = this.filters$.pipe(
-      switchMap(filters => this.personDataService.getPersons(filters.astronautsOnly))
+      tap(() => this.isLoading = true),
+      // delay(750),
+      switchMap(filters => this.personDataService.getPersons(filters.astronautsOnly)),
+      tap(() => this.isLoading = false),
     );
     this.cols$ = this.isHandset$.pipe(
       map(isHandset => isHandset ? 1 : 3)
